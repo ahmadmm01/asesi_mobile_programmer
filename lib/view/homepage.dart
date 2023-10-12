@@ -57,6 +57,16 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _sortBooksByTitle() {
+    _books.sort((a, b) => (a.title ?? '').compareTo(b.title ?? ''));
+    setState(() {});
+  }
+
+  void _sortBooksByAuthor() {
+    _books.sort((a, b) => (a.author ?? '').compareTo(b.author ?? ''));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -79,6 +89,27 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Panggil fungsi untuk mengurutkan berdasarkan judul
+                    _sortBooksByTitle();
+                  },
+                  child: const Text('Sort by Title'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Panggil fungsi untuk mengurutkan berdasarkan penulis
+                    _sortBooksByAuthor();
+                  },
+                  child: const Text('Sort by Author'),
+                ),
+                // Tambahkan tombol-tombol penyortiran lainnya sesuai kebutuhan
+              ],
+            ),
+
             // Tambahkan kondisi untuk menampilkan pesan jika buku tidak ditemukan
             if (_booksNotFound)
               const Padding(
@@ -98,11 +129,19 @@ class _HomePageState extends State<HomePage> {
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                     child: ListTile(
                       title: Text(_books[index].title ?? ''),
-                      subtitle: Column(
+                      subtitle: Wrap(
                         children: [
                           Row(
                             children: [
+                              const Text('Author: '),
                               Text(_books[index].author ?? ''),
+                            ],
+                          ),
+                          const SizedBox(
+                              width: 4), // Jarak antara "Author" dan "Review"
+                          Row(
+                            children: [
+                              const Text('Review: '),
                               Text(_books[index].review ?? ''),
                             ],
                           ),
